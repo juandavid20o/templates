@@ -1,0 +1,22 @@
+<!-- Indica que esta plantilla hereda de la plantilla usuarios/index.html-->
+{% extends 'usuario/index.html' %}
+
+<!-- Indica el inicio del bloque -->
+{% block content %}
+
+<form method="post">
+    <!-- {% csrf_token %} genera un token de seguridad para proteger el formulario contra ataques de tipo CSRF (Cross-Site Request Forgery).-->
+    {% csrf_token %}
+    
+    <!-- {{ form.as_p }} muestra automáticamente los campos del formulario de Django.
+         "form" es el formulario que Django proporciona a la plantilla.
+         ".as_p" hace que cada campo del formulario se muestre dentro de una etiqueta p.
+    -->
+    {{ form.as_p }}
+    
+    <button type="submit">Guardar</button>
+    <a href="{% url 'listar_usuario' %}">Cancelar</a>
+</form>
+
+<!--Fin del Bloque-->
+{% endblock %}

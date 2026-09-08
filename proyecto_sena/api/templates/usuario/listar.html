@@ -1,0 +1,35 @@
+{% extends 'usuario/index.html' %}
+
+{% block content %}
+
+<a href="{% url 'crear_usuario' %}">Nuevo</a>
+
+<table>
+    <thead>
+        <tr>
+            <td>Nombre</td>
+            <td>Correo</td>
+            <td>Cargo</td>
+            <td>Acciones</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuario %}
+        <tr>
+            <td>{{usuario.nombre}}</td>
+            <td>{{usuario.correo}}</td>
+            <td>{{usuario.cargo}}</td>
+            <td>
+                <a href="{% url 'actualizar_usuario' usuario.pk %}">Editar</a>
+                <a href="{% url 'eliminar_usuario' usuario.pk %}">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No se encuentra usuarios</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
