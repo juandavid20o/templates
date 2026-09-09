@@ -3,20 +3,145 @@
 
 <!-- Indica el inicio del bloque -->
 {% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap');
 
-<form method="post">
-    <!-- {% csrf_token %} genera un token de seguridad para proteger el formulario contra ataques de tipo CSRF (Cross-Site Request Forgery).-->
-    {% csrf_token %}
-    
-    <!-- {{ form.as_p }} muestra automáticamente los campos del formulario de Django.
-         "form" es el formulario que Django proporciona a la plantilla.
-         ".as_p" hace que cada campo del formulario se muestre dentro de una etiqueta p.
-    -->
-    {{ form.as_p }}
-    
-    <button type="submit">Guardar</button>
-    <a href="{% url 'listar_usuario' %}">Cancelar</a>
-</form>
+    body.virtual-interface {
+        background-color: #050509;
+        color: #0ff;
+        font-family: 'Roboto Mono', monospace;
+        overflow-x: hidden;
+    }
+
+    body.virtual-interface::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 30px 30px;
+        z-index: -1;
+    }
+
+    .vr-card {
+        background: rgba(10, 10, 20, 0.85);
+        border: 1px solid #0ff;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+    }
+
+    .vr-header {
+        background: rgba(0, 50, 50, 0.6);
+        border-bottom: 1px solid #0ff;
+        color: #0f0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    /* Estilizar los campos que genera Django con .as_p */
+    .vr-form p {
+        margin-bottom: 1rem;
+    }
+
+    .vr-form label {
+        color: #0ff;
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .vr-form input, .vr-form select, .vr-form textarea {
+        background-color: #050509 !important;
+        border: 1px solid #0ff !important;
+        color: #fff !important;
+        font-family: 'Roboto Mono', monospace !important;
+        border-radius: 2px !important;
+        width: 100%;
+        padding: 8px;
+    }
+
+    .vr-form input:focus, .vr-form select:focus {
+        border-color: #0f0 !important;
+        box-shadow: 0 0 8px rgba(0, 255, 0, 0.5) !important;
+        outline: none;
+    }
+
+    .vr-btn {
+        font-family: 'Roboto Mono', monospace;
+        font-weight: bold;
+        border-radius: 2px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    /* Botón Guardar (Verde neón) */
+    .vr-btn-save {
+        background-color: #0f0;
+        color: #050509;
+        border: none;
+        cursor: pointer;
+    }
+    .vr-btn-save:hover {
+        background-color: #fff;
+        box-shadow: 0 0 10px #0f0;
+    }
+
+    /* Botón Cancelar (Amarillo neón) */
+    .vr-btn-cancel {
+        background-color: transparent;
+        border: 1px solid #ff0;
+        color: #ff0;
+    }
+    .vr-btn-cancel:hover {
+        background-color: #ff0;
+        color: #000;
+        box-shadow: 0 0 10px #ff0;
+    }
+</style>
+
+<script>
+    document.body.classList.add('virtual-interface');
+</script>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="vr-card shadow-sm">
+                <div class="vr-header card-header p-3 text-center">
+                    <h3 class="mb-0 fs-5 fw-bold">[ GESTIÓN :: USUARIO ]</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" class="vr-form">
+                        <!-- {% csrf_token %} genera un token de seguridad para proteger el formulario -->
+                        {% csrf_token %}
+                        
+                        <!-- {{ form.as_p }} muestra automáticamente los campos del formulario -->
+                        {{ form.as_p }}
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <a href="{% url 'listar_usuario' %}" class="vr-btn vr-btn-cancel">[ &lt;&lt; CANCELAR ]</a>
+                            <button type="submit" class="vr-btn vr-btn-save">[ EJECUTAR GUARDAR ]</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="vr-header card-footer text-center text-muted p-2 fs-6">
+                    INPUT_MODE :: SECURE
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!--Fin del Bloque-->
 {% endblock %}

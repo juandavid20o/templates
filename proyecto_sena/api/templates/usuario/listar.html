@@ -1,35 +1,156 @@
 {% extends 'usuario/index.html' %}
 
 {% block content %}
+<style>
+    /* Importar fuente monoespaciada estilo código */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap');
 
-<a href="{% url 'crear_usuario' %}">Nuevo</a>
+    body.virtual-interface {
+        background-color: #050509; /* Fondo negro azulado muy oscuro */
+        color: #0ff; /* Texto cian neón */
+        font-family: 'Roboto Mono', monospace;
+        overflow-x: hidden;
+    }
 
-<table>
-    <thead>
-        <tr>
-            <td>Nombre</td>
-            <td>Correo</td>
-            <td>Cargo</td>
-            <td>Acciones</td>
-        </tr>
-    </thead>
-    <tbody>
-        {% for usuario in usuario %}
-        <tr>
-            <td>{{usuario.nombre}}</td>
-            <td>{{usuario.correo}}</td>
-            <td>{{usuario.cargo}}</td>
-            <td>
-                <a href="{% url 'actualizar_usuario' usuario.pk %}">Editar</a>
-                <a href="{% url 'eliminar_usuario' usuario.pk %}">Eliminar</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">No se encuentra usuarios</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    /* Efecto de rejilla sutil de fondo */
+    body.virtual-interface::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 30px 30px;
+        z-index: -1;
+    }
 
+    .vr-card {
+        background: rgba(10, 10, 20, 0.75); /* Fondo de tarjeta semitransparente */
+        border: 1px solid #0ff; /* Borde cian neón */
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3); /* Brillo exterior */
+        backdrop-filter: blur(5px); /* Efecto de desenfoque detrás */
+    }
+
+    .vr-header {
+        background: rgba(0, 50, 50, 0.6); /* Encabezado de tarjeta oscuro */
+        border-bottom: 1px solid #0ff;
+        color: #0f0; /* Título en verde neón */
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .vr-table {
+        color: #fff !important; /* Texto de la tabla blanco */
+    }
+
+    .vr-table thead {
+        background-color: #000;
+        color: #0ff; /* Encabezado de tabla cian */
+        border-bottom: 2px solid #0f0;
+    }
+
+    .vr-table tbody tr:hover {
+        background-color: rgba(0, 255, 255, 0.15); /* Resaltar fila al pasar el mouse */
+    }
+
+    .vr-btn {
+        font-family: 'Roboto Mono', monospace;
+        font-weight: bold;
+        border-radius: 2px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    /* Botón Nuevo (Verde neón) */
+    .vr-btn-new {
+        background-color: #0f0;
+        color: #050509;
+        border: none;
+    }
+    .vr-btn-new:hover {
+        background-color: #fff;
+        box-shadow: 0 0 10px #0f0;
+    }
+
+    /* Botón Editar (Amarillo neón) */
+    .vr-btn-edit {
+        background-color: transparent;
+        border: 1px solid #ff0;
+        color: #ff0;
+    }
+    .vr-btn-edit:hover {
+        background-color: #ff0;
+        color: #000;
+        box-shadow: 0 0 10px #ff0;
+    }
+
+    /* Botón Eliminar (Rojo neón) */
+    .vr-btn-delete {
+        background-color: transparent;
+        border: 1px solid #f00;
+        color: #f00;
+    }
+    .vr-btn-delete:hover {
+        background-color: #f00;
+        color: #000;
+        box-shadow: 0 0 10px #f00;
+    }
+    
+    .vr-empty-msg {
+        color: #f00; /* Mensaje de vacío en rojo */
+        font-weight: bold;
+    }
+</style>
+
+<!-- Añadir la clase 'virtual-interface' al body -->
+<script>
+    document.body.classList.add('virtual-interface');
+</script>
+
+<div class="container my-5">
+    <div class="vr-card shadow-sm">
+        <div class="vr-header card-header d-flex justify-content-between align-items-center p-3">
+            <h2 class="mb-0 fs-5 fw-bold">[ CONSOLA :: REGISTRO_USUARIOS ]</h2>
+            <a href="{% url 'crear_usuario' %}" class="vr-btn vr-btn-new btn btn-sm px-3">[ + NUEVO_USUARIO ]</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="vr-table table table-borderless table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>[ NOMBRE ]</th>
+                            <th>[ CORREO_ELECTRONICO ]</th>
+                            <th>[ ROL/CARGO ]</th>
+                            <th class="text-center">[ ACCIONES ]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in object_list %}
+                        <tr>
+                            <td>> {{ usuario.nombre }}</td>
+                            <td>{{ usuario.correo }}</td>
+                            <td>{{ usuario.cargo }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'actualizar_usuario' usuario.pk %}" class="vr-btn vr-btn-edit btn btn-sm ms-1">[ EDITAR ]</a>
+                                <a href="{% url 'eliminar_usuario' usuario.pk %}" class="vr-btn vr-btn-delete btn btn-sm ms-1">[ ELIMINAR ]</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="vr-empty-msg text-center py-4"> >> SISTEMA::SIN_REGISTROS_ENCONTRADOS</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="vr-header card-footer text-end text-muted p-2 fs-6">
+            SECURE_CONNECTION :: ACTIVE [ S.E.N.A._VIRTUAL_TERMINAL ]
+        </div>
+    </div>
+</div>
 {% endblock %}
